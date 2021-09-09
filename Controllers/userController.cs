@@ -70,6 +70,12 @@ namespace hospitalmanagement.Controllers{
             _dataRepository.Delete(user);
             return NoContent();
         }
+
+        [HttpGet("func")]
+        public IActionResult GetUsers(string sortByfirstName, string sortBylastName,string search){
+            IEnumerable<User> users = _dataRepository.GetUsers(sortByfirstName, sortBylastName, search);
+            return Ok(users);
+        }
         
     }
 }

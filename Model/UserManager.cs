@@ -46,5 +46,38 @@ namespace hospitalmanagement.Model{
 
             _dbContext.SaveChanges();
         }
+
+        public IEnumerable<User> GetUsers(string sortByfirstName, string sortBylastName, string search)
+        {
+            if(string.IsNullOrWhiteSpace(sortByfirstName) 
+                && string.IsNullOrWhiteSpace(sortBylastName) 
+                && string.IsNullOrWhiteSpace(search))
+            {
+                return GetUsers();
+            }else{
+                
+            }
+
+            var collection = _dbContext.user as IQueryable<User>;
+            if(!string.IsNullOrWhiteSpace(sortByfirstName))
+            {
+                sortByfirstName = sortByfirstName.Trim();
+                collection = collection.Where(a => a.firstName == sortByfirstName);
+            }
+            if(!string.IsNullOrWhiteSpace(sortBylastName)){
+
+                sortBylastName = sortBylastName.Trim();
+                collection = collection.Where(a => a.lastName == sortBylastName);
+
+            }
+            if(!string.IsNullOrWhiteSpace(search))
+            {
+                search = search.Trim();
+                return collection.Where(a => a.firstName.Contains(search) || a.lastName.Contains(search));
+            }
+
+            return collection.ToList();
+
+        }
     }
 }
